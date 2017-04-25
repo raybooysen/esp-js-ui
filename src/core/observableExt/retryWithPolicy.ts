@@ -5,7 +5,7 @@ import RetryPolicy from './retryPolicy';
 const _log = Logger.create('retryWithPolicy');
 
 Rx.Observable.prototype.retryWithPolicy = function<T>(policy: RetryPolicy, onError?: (err: Error) => void, scheduler?: Rx.IScheduler): Rx.Observable<T>  {
-    let _scheduler = scheduler || Rx.Scheduler.async;
+    let _scheduler = scheduler || Rx.Scheduler.default;
     let _source = this;
     return Rx.Observable.create<T>(
         o => {
@@ -30,9 +30,7 @@ Rx.Observable.prototype.retryWithPolicy = function<T>(policy: RetryPolicy, onErr
                             let retryLimitMessage = policy.retryLimit === -1 ? 'unlimited' : policy.retryLimit;
                             _log.error(`operation [${policy.description}] error: [${err}], scheduling retry after [${policy.retryAfterElapsedMs}]ms, this is attempt [${policy.retryCount}] of [${retryLimitMessage}]`);
                             isRetry = true;
-                            // _scheduler.scheduleWithRelative(policy.retryAfterElapsedMs, subscribe);
-                            _scheduler.scheduleFuture(
-                                '',
+                            _scheduler.scheduleWithRelative(
                                 policy.retryAfterElapsedMs,
                                 subscribe
                             );

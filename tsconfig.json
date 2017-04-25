@@ -15,12 +15,12 @@
     "declaration": true,
     "declarationDir": "./definitions",
     "strictNullChecks": false,
-    "outDir" : "./.tsbuild"
+    "outDir" : "./.tsbuild",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "files": [
-    "src/index.ts",
-    "typings/index.d.ts",
-    "typings/custom.d.ts",
-    "node_modules/rx/ts/rx.all.d.ts"
+    "src/index.ts"
   ]
 }
